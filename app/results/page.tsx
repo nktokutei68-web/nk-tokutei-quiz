@@ -2,7 +2,8 @@
 
 import { useRouter } from 'next/navigation';
 import { useQuiz } from '@/context/QuizContext';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
+import { saveTestResult } from '@/lib/history';
 
 function getMotivation(score: number, total: number) {
   const pct = score / total;
@@ -19,6 +20,15 @@ export default function ResultsPage() {
   useEffect(() => {
     if (!state.userName || state.answers.length === 0) router.replace('/');
   }, [state.userName, state.answers, router]);
+
+  // Save to history once
+  const savedRef = useRef(false);
+  useEffect(() => {
+    if (!savedRef.current && state.userName && state.answers.length > 0 && state.quizConfig) {
+      saveTestResult(state.userName, state.quizConfig, state.answers);
+      savedRef.current = true;
+    }
+  }, [state.userName, state.answers, state.quizConfig]);
 
   const total = state.answers.length || 1;
   const score = state.answers.filter((a) => a.isCorrect).length;
