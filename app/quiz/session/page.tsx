@@ -19,8 +19,8 @@ export default function QuizSessionPage() {
   const [answered, setAnswered] = useState(false);
   const [questionKey, setQuestionKey] = useState(0);
   const [extraWords, setExtraWords] = useState<VocabWord[]>([]);
+  const [showExitConfirm, setShowExitConfirm] = useState(false);
 
-  // Use ref to always have the latest answers (avoids stale closure)
   const answersRef = useRef<QuizAnswer[]>([]);
   const scoreRef = useRef(0);
 
@@ -53,7 +53,6 @@ export default function QuizSessionPage() {
         );
       }
 
-      // Fetch extra words for distractors (from the whole library)
       const extra = await fetchRandomWords(40);
       setExtraWords(extra);
       setWords(data);
@@ -79,7 +78,6 @@ export default function QuizSessionPage() {
 
   const handleNext = useCallback(() => {
     if (currentIndex + 1 >= words.length) {
-      // Store results in context using ref (always up-to-date)
       dispatch({ type: 'SET_WORDS', payload: words });
       answersRef.current.forEach((a) => dispatch({ type: 'ANSWER_QUESTION', payload: a }));
       router.push('/results');
@@ -89,6 +87,11 @@ export default function QuizSessionPage() {
       setQuestionKey((prev) => prev + 1);
     }
   }, [currentIndex, words, dispatch, router]);
+
+  const handleExit = () => {
+    dispatch({ type: 'RESET_QUIZ' });
+    router.push('/quiz');
+  };
 
   if (!state.userName || !state.quizConfig) return null;
 
@@ -117,12 +120,20 @@ export default function QuizSessionPage() {
         <span className="text-5xl mb-4">😵</span>
         <h2 className="text-xl font-bold text-slate-800 mb-2">Đã xảy ra lỗi</h2>
         <p className="text-slate-500 text-center mb-6 max-w-md text-sm">{error}</p>
-        <button
-          onClick={loadWords}
-          className="py-2.5 px-6 rounded-lg bg-indigo-600 text-white font-semibold hover:bg-indigo-500 transition-all active:scale-95 shadow-sm"
-        >
-          🔄 Thử lại
-        </button>
+        <div className="flex gap-3">
+          <button
+            onClick={handleExit}
+            className="py-3 px-5 rounded-lg bg-slate-100 border border-slate-200 text-slate-600 font-semibold hover:bg-slate-200 transition-all active:scale-95"
+          >
+            ← Quay về
+          </button>
+          <button
+            onClick={loadWords}
+            className="py-3 px-5 rounded-lg bg-indigo-600 text-white font-semibold hover:bg-indigo-500 transition-all active:scale-95 shadow-sm"
+          >
+            🔄 Thử lại
+          </button>
+        </div>
       </div>
     );
   }
@@ -130,23 +141,52 @@ export default function QuizSessionPage() {
   const currentWord = words[currentIndex];
   const allWordsForOptions = [...words, ...extraWords];
 
-  // Label
   const configLabel = state.quizConfig.type === 'section'
     ? `Phần ${state.quizConfig.sectionNumber}`
     : `Test ngẫu nhiên (#${state.quizConfig.startId}–${state.quizConfig.endId})`;
 
   return (
-    <div className="flex-1 flex flex-col items-center px-4 py-6 md:py-8">
+    <div className="flex-1 flex flex-col items-center px-3 sm:px-4 py-4 sm:py-6 md:py-8">
       <div className="w-full max-w-lg">
-        {/* Config label */}
-        <div className="flex items-center justify-center mb-5">
-          <span className="text-xs font-medium text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-100">
+        {/* Top bar: back button + label */}
+        <div className="flex items-center justify-between mb-4">
+          <button
+            onClick={() => setShowExitConfirm(true)}
+            className="py-2 px-3 rounded-lg bg-slate-100 border border-slate-200 text-slate-500 text-sm font-medium hover:bg-slate-200 hover:text-slate-700 transition-all active:scale-95"
+          >
+            ← Quay về
+          </button>
+          <span className="text-xs font-medium text-indigo-600 bg-indigo-50 px-3 py-1.5 rounded-full border border-indigo-100">
             {configLabel}
           </span>
         </div>
 
+        {/* Exit confirmation modal */}
+        {showExitConfirm && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 px-4 animate-fadeIn">
+            <div className="bg-white rounded-2xl p-6 w-full max-w-sm shadow-xl animate-fadeInUp">
+              <h3 className="text-lg font-bold text-slate-800 mb-2">Thoát bài quiz?</h3>
+              <p className="text-sm text-slate-500 mb-5">Tiến trình hiện tại sẽ bị mất. Bạn chắc chắn muốn quay về?</p>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setShowExitConfirm(false)}
+                  className="flex-1 py-3 px-4 rounded-xl bg-slate-100 border border-slate-200 text-slate-700 font-semibold hover:bg-slate-200 transition-all active:scale-[0.98]"
+                >
+                  Tiếp tục làm
+                </button>
+                <button
+                  onClick={handleExit}
+                  className="flex-1 py-3 px-4 rounded-xl bg-red-500 text-white font-semibold hover:bg-red-400 transition-all active:scale-[0.98]"
+                >
+                  Thoát
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Progress */}
-        <div className="mb-6">
+        <div className="mb-5">
           <ProgressBar current={currentIndex + 1} total={words.length} />
         </div>
 
@@ -159,12 +199,12 @@ export default function QuizSessionPage() {
           />
         </div>
 
-        {/* Next button */}
+        {/* Next button — fixed at bottom on mobile */}
         {answered && (
-          <div className="mt-6 animate-fadeIn">
+          <div className="mt-5 pb-2 animate-fadeIn">
             <button
               onClick={handleNext}
-              className="w-full py-3.5 px-6 rounded-xl bg-indigo-600 text-white font-semibold hover:bg-indigo-500 transition-all duration-200 active:scale-[0.98] shadow-sm"
+              className="w-full py-4 px-6 rounded-xl bg-indigo-600 text-white font-semibold text-base hover:bg-indigo-500 transition-all duration-200 active:scale-[0.98] shadow-sm min-h-[52px]"
             >
               {currentIndex + 1 >= words.length ? '📊 Xem kết quả' : 'Tiếp theo →'}
             </button>
