@@ -47,8 +47,14 @@ export default function RootLayout({
           <header className="w-full border-b border-slate-100 bg-white/70 backdrop-blur-md sticky top-0 z-50 transition-all duration-300">
             <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
               <Link href="/" className="flex items-center gap-2.5 group">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center text-white shadow-md shadow-indigo-100 group-hover:scale-105 transition-all duration-300">
-                  <span className="text-xl font-bold">NK</span>
+                <div className="relative w-10 h-10 group-hover:scale-105 transition-all duration-300">
+                  {/* Shadow layer */}
+                  <div className="absolute inset-0 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 opacity-40 blur-md translate-y-1" />
+                  {/* Main logo */}
+                  <div className="relative w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-500 to-violet-500 flex items-center justify-center shadow-lg ring-1 ring-white/20 overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-b from-white/15 to-transparent" />
+                    <span className="relative text-white text-sm font-black tracking-tighter" style={{ letterSpacing: '-0.05em' }}>NK</span>
+                  </div>
                 </div>
                 <div className="flex flex-col">
                   <span className="text-base font-black text-slate-800 tracking-tight group-hover:text-indigo-600 transition-colors">
@@ -59,12 +65,6 @@ export default function RootLayout({
                   </span>
                 </div>
               </Link>
-
-              {/* Tag/Badge for Specialized Training Unit */}
-              <div className="flex items-center gap-2 bg-indigo-50/80 border border-indigo-100/60 px-3 py-1 rounded-full text-xs font-semibold text-indigo-600 backdrop-blur-sm shadow-sm shadow-indigo-50/20">
-                <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-ping"></span>
-                Đào tạo QLSX chuyên sâu
-              </div>
             </div>
           </header>
 

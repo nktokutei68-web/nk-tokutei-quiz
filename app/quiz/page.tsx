@@ -84,20 +84,6 @@ export default function QuizSelectionPage() {
           </button>
         </div>
 
-        {/* QLSX Banner Section */}
-        <div className="mb-6 p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-slate-900 to-indigo-950 text-white relative overflow-hidden shadow-lg border border-slate-800/80 animate-fadeIn">
-          <div className="absolute top-[-25%] right-[-10%] w-40 h-40 rounded-full bg-indigo-500/20 blur-2xl pointer-events-none" />
-          <div className="relative z-10 space-y-2">
-            <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-indigo-500/25 border border-indigo-400/20 text-[9px] font-extrabold uppercase tracking-widest text-indigo-300">
-              Đào tạo Quản lý Sản xuất chuyên sâu
-            </span>
-            <h3 className="text-base sm:text-lg font-black tracking-tight">Hệ thống Từ vựng QLSX & 5S Tiêu Chuẩn</h3>
-            <p className="text-xs text-slate-300 max-w-2xl leading-relaxed">
-              Tài liệu độc quyền của NK TOKUTEI bao quát toàn diện quy trình vận hành nhà máy cơ khí, thiết bị, dây chuyền lắp ráp và kiểm tra QA/QC, giúp học viên dễ dàng đỗ các kỳ thi Kỹ năng Đặc định.
-            </p>
-          </div>
-        </div>
-
         {/* Random test button */}
         <div className="mb-6">
           <button
