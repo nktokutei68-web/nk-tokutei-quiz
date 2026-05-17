@@ -26,7 +26,7 @@ export default function RootLayout({
   return (
     <html lang="vi" className={`${notoSansJP.variable} h-full antialiased`}>
       <body
-        className="min-h-full flex flex-col bg-[#f8fafc] text-slate-800 relative overflow-x-hidden"
+        className="min-h-full flex flex-col bg-[#eef2ff] text-slate-800 relative overflow-x-hidden"
         style={{ fontFamily: "'Noto Sans JP', sans-serif" }}
       >
         {/* Background Decorative Mesh & Floating Blobs */}

@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-background: #f8fafc;
+  --color-background: #eef2ff;
   --color-foreground: #1e293b;
   --font-sans: 'Noto Sans JP', var(--font-geist-sans), sans-serif;
   --font-mono: var(--font-geist-mono);
@@ -73,7 +73,7 @@
 }
 
 body {
-  background: #f8fafc;
+  background: #eef2ff;
   color: #1e293b;
   font-family: 'Noto Sans JP', sans-serif;
 }
