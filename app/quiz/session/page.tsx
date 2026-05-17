@@ -37,7 +37,7 @@ export default function QuizSessionPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const loadWords = async () => {
+  async function loadWords() {
     if (!state.quizConfig) return;
     setIsLoading(true);
     setError(null);
@@ -99,16 +99,17 @@ export default function QuizSessionPage() {
   if (isLoading) {
     return (
       <div className="flex-1 flex flex-col items-center justify-center px-4 py-12">
-        <div className="animate-float mb-6">
-          <span className="text-5xl">📚</span>
+        <div className="relative w-24 h-24 mb-8 flex items-center justify-center">
+          <div className="absolute inset-0 rounded-full border-4 border-indigo-100 border-t-indigo-600 animate-spin" />
+          <span className="text-4xl animate-bounce">⚙️</span>
         </div>
-        <div className="space-y-3 w-full max-w-md">
-          <div className="h-3 bg-slate-200 rounded-full animate-pulse w-1/3 mx-auto" />
-          <div className="h-28 bg-slate-100 rounded-xl animate-pulse" />
-          <div className="h-12 bg-slate-100 rounded-xl animate-pulse" />
-          <div className="h-12 bg-slate-100 rounded-xl animate-pulse" />
+        <div className="space-y-3.5 w-full max-w-md bg-white/40 backdrop-blur-md p-6 rounded-2xl border border-slate-200/50 shadow-sm">
+          <div className="h-3 bg-indigo-100 rounded-full animate-pulse w-1/3 mx-auto" />
+          <div className="h-20 bg-slate-100/50 rounded-xl animate-pulse" />
+          <div className="h-12 bg-slate-100/50 rounded-xl animate-pulse" />
+          <div className="h-12 bg-slate-100/50 rounded-xl animate-pulse" />
         </div>
-        <p className="text-slate-400 mt-6 text-sm">Đang tải từ vựng...</p>
+        <p className="text-slate-500 font-bold mt-6 text-sm animate-pulse">Đang đồng bộ từ vựng QLSX...</p>
       </div>
     );
   }
@@ -152,33 +153,39 @@ export default function QuizSessionPage() {
         <div className="flex items-center justify-between mb-4">
           <button
             onClick={() => setShowExitConfirm(true)}
-            className="py-2 px-3 rounded-lg bg-slate-100 border border-slate-200 text-slate-500 text-sm font-medium hover:bg-slate-200 hover:text-slate-700 transition-all active:scale-95"
+            className="py-2 px-3.5 rounded-xl bg-white/60 backdrop-blur-md border border-slate-200/50 text-slate-500 text-xs sm:text-sm font-bold hover:bg-slate-100 hover:text-slate-700 transition-all active:scale-95 shadow-sm"
           >
             ← Quay về
           </button>
-          <span className="text-xs font-medium text-indigo-600 bg-indigo-50 px-3 py-1.5 rounded-full border border-indigo-100">
+          <span className="text-xs font-extrabold text-indigo-600 bg-indigo-50 px-3 py-1.5 rounded-full border border-indigo-100/50 shadow-sm">
             {configLabel}
           </span>
         </div>
 
         {/* Exit confirmation modal */}
         {showExitConfirm && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 px-4 animate-fadeIn">
-            <div className="bg-white rounded-2xl p-6 w-full max-w-sm shadow-xl animate-fadeInUp">
-              <h3 className="text-lg font-bold text-slate-800 mb-2">Thoát bài quiz?</h3>
-              <p className="text-sm text-slate-500 mb-5">Tiến trình hiện tại sẽ bị mất. Bạn chắc chắn muốn quay về?</p>
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm px-4 animate-fadeIn">
+            <div className="bg-white/90 backdrop-blur-xl border border-white/60 rounded-3xl p-6 sm:p-7 w-full max-w-sm shadow-2xl animate-fadeInUp relative overflow-hidden">
+              <div className="absolute top-[-10%] right-[-10%] w-20 h-20 rounded-full bg-rose-200/20 blur-xl pointer-events-none" />
+              <div className="text-center mb-5">
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-rose-50 border border-rose-100 text-xl text-rose-500 mb-3 animate-bounce">
+                  ⚠️
+                </div>
+                <h3 className="text-lg font-black text-slate-800">Tạm dừng ôn tập?</h3>
+                <p className="text-xs sm:text-sm text-slate-500 mt-1.5 leading-relaxed">Tiến trình làm bài QLSX hiện tại của bạn sẽ không được lưu lại. Bạn chắc chắn muốn quay về?</p>
+              </div>
               <div className="flex gap-3">
                 <button
                   onClick={() => setShowExitConfirm(false)}
-                  className="flex-1 py-3 px-4 rounded-xl bg-slate-100 border border-slate-200 text-slate-700 font-semibold hover:bg-slate-200 transition-all active:scale-[0.98]"
+                  className="flex-1 py-3 px-4 rounded-xl bg-slate-100 border border-slate-200/50 text-slate-700 font-bold text-sm hover:bg-slate-200 transition-all duration-300 active:scale-[0.98] shadow-sm"
                 >
-                  Tiếp tục làm
+                  Tiếp tục học
                 </button>
                 <button
                   onClick={handleExit}
-                  className="flex-1 py-3 px-4 rounded-xl bg-red-500 text-white font-semibold hover:bg-red-400 transition-all active:scale-[0.98]"
+                  className="flex-1 py-3 px-4 rounded-xl bg-gradient-to-r from-rose-50 to-red-600 text-white font-bold text-sm hover:opacity-95 transition-all duration-300 active:scale-[0.98] shadow-md shadow-rose-100"
                 >
-                  Thoát
+                  Xác nhận thoát
                 </button>
               </div>
             </div>
@@ -204,9 +211,9 @@ export default function QuizSessionPage() {
           <div className="mt-5 pb-2 animate-fadeIn">
             <button
               onClick={handleNext}
-              className="w-full py-4 px-6 rounded-xl bg-indigo-600 text-white font-semibold text-base hover:bg-indigo-500 transition-all duration-200 active:scale-[0.98] shadow-sm min-h-[52px]"
+              className="w-full py-4 px-6 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-extrabold text-base hover:opacity-95 transition-all duration-200 active:scale-[0.98] shadow-md shadow-indigo-150 min-h-[52px]"
             >
-              {currentIndex + 1 >= words.length ? '📊 Xem kết quả' : 'Tiếp theo →'}
+              {currentIndex + 1 >= words.length ? '📊 Xem kết quả cuộc thi' : 'Từ tiếp theo →'}
             </button>
           </div>
         )}
