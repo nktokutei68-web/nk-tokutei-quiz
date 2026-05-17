@@ -25,18 +25,8 @@ export default function HomePage() {
           <div className="absolute top-[-10%] right-[-10%] w-24 h-24 rounded-full bg-indigo-300/10 blur-xl pointer-events-none" />
           <div className="absolute bottom-[-10%] left-[-10%] w-24 h-24 rounded-full bg-violet-300/10 blur-xl pointer-events-none" />
           
-          {/* Logo + Title */}
+          {/* Title */}
           <div className="text-center mb-8 relative z-10">
-            {/* Large NK Logo */}
-            <div className="inline-flex items-center justify-center mb-5">
-              <div className="relative w-20 h-20">
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-indigo-600 to-violet-500 opacity-30 blur-lg scale-110" />
-                <div className="relative w-20 h-20 rounded-2xl bg-gradient-to-tr from-indigo-600 via-indigo-500 to-violet-500 flex items-center justify-center shadow-xl ring-1 ring-white/20 overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-b from-white/20 to-transparent" />
-                  <span className="relative text-white text-2xl font-black" style={{ letterSpacing: '-0.05em' }}>NK</span>
-                </div>
-              </div>
-            </div>
             <h1 className="text-xl font-extrabold text-slate-800">
               NK TOKUTEI
             </h1>
